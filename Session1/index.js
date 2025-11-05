@@ -5,9 +5,14 @@ const PORT = 8089;
 const server = http.createServer((req, res) => {
 
     const url = req.url;
+    const method = req.method;
     console.log("request url is ", url);
 
     if(url === "/") {
+        if(method !== "GET") {
+            res.writeHead(405, { "Content-Type": "text/plain" });
+            return res.end("Method Not Allowed");
+        }
         res.writeHead(200, { "Content-Type": "text/html" });
         
         res.write("<h1>hello welcome<h1>");
