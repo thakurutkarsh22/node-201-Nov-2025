@@ -1,12 +1,13 @@
 const express = require('express');
+require('dotenv').config();
+
 const ActivityRoute = require('./Routes/ActivityRoute');
 const HomeRoute = require('./Routes/HomeRoute');
 const server = express();
 
-const PORT = 8089;
+const PORT = process.env.PORT;
 
 // app.use(express.json());
-
 
 server.use("/", HomeRoute);
 
