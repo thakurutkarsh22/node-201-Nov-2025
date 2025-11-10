@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require("mongoose")
 require('dotenv').config();
 
 const ActivityRoute = require('./Routes/ActivityRoute');
@@ -34,6 +35,16 @@ server.get("/fitness", (req, res) => {
 // ACtivity 
 server.use("/api/v1/activity", ActivityRoute);
 
+
+
+const MONGO_URI = process.env.MONGDB_URI + '' + process.env.DB_NAME + '';
+
+mongoose.connect(MONGO_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1);
+    });
 
 
 
