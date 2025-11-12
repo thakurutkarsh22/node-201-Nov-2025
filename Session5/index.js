@@ -4,11 +4,15 @@ require('dotenv').config();
 
 const ActivityRoute = require('./Routes/ActivityRoute');
 const HomeRoute = require('./Routes/HomeRoute');
+const BlogRoute = require('./Routes/BlogRoute');
 const server = express();
 
 const PORT = process.env.PORT;
 
-// app.use(express.json());
+// this is a universal middleware
+// 1. it will run for every request
+// 2. it should be placed before all the routes
+server.use(express.json());
 
 server.use("/", HomeRoute);
 
@@ -34,6 +38,9 @@ server.get("/fitness", (req, res) => {
 
 // ACtivity 
 server.use("/api/v1/activity", ActivityRoute);
+
+// blogs 
+server.use("/api/v1/blog", BlogRoute);
 
 
 
