@@ -1,36 +1,16 @@
 const BlogModel = require("../Models/BlogsModel");
+const BlogService = require("../Service/BlogService");
 const { validateBlogInput } = require("../Validators/BlogInputValidation");
 
 async function createBlog(req, res, next) {
-
-
-    // validation of the request 
-    const {error, value} = validateBlogInput(req.body);
-    if(error) {
-        return  res.status(400).json({
-            message: "Invalid input data",
-            error: error.details[0].message
-        });
-
-        return;
-    }
-
-
-
     const {title, author, content} = req.body;
 
-
-    // we will create a mongoose model object here
-    
-    const newBlog = new BlogModel({
-        title: title,
-        content: content,
-        author: author
-    });
-
-    // save to database 
+    // call the service
     try {
-        const response = await newBlog.save();
+        console.log("Inside controller - before service call", req.body);
+        const response = await BlogService.createBLog({title, author, content});
+        console.log("Inside controller - before service call", response);
+
         res.status(201).json({
             message: "Blog created successfully",
             data: response
