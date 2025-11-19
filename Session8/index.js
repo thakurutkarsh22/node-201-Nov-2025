@@ -5,6 +5,7 @@ require('dotenv').config();
 const ActivityRoute = require('./Routes/ActivityRoute');
 const HomeRoute = require('./Routes/HomeRoute');
 const BlogRoute = require('./Routes/BlogRoute');
+const AuthRoute = require('./Routes/AuthRoute');
 const server = express();
 
 const PORT = process.env.PORT;
@@ -41,6 +42,9 @@ server.use("/api/v1/activity", ActivityRoute);
 
 // blogs 
 server.use("/api/v1/blog", BlogRoute);
+
+// auth route 
+server.use("/api/v1/auth", AuthRoute);
 
 
 
