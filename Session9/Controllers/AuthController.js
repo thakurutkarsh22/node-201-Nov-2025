@@ -5,7 +5,7 @@ async function login (req, res) {
     const { email, password } = req.body;
 
     try {
-        const {isLogged} = await AuthService.login({ email, password });
+        const {isLogged, token} = await AuthService.login({ email, password });
 
         if(!isLogged) {
             return res.status(401).json({
@@ -14,7 +14,8 @@ async function login (req, res) {
         }
         res.status(200).json({
             message: "User logged in successfully",
-            data: isLogged
+            data: isLogged,
+            token
         });
     } catch (error) {
         res.status(500).json({

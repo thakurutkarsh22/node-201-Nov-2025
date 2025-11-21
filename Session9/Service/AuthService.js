@@ -1,5 +1,8 @@
 const UserModel = require("../Models/UserModel");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { SECRET_JWT_KEY } = require("../Middleware/JWTAuthMiddleware");
+
 
 class AuthService {
     
@@ -34,7 +37,8 @@ class AuthService {
     static async login({ email, password }) {
 
         const isUserLoggedIn = {
-            isLogged: false
+            isLogged: false,
+            token: ""
         }
 
         try {
@@ -45,9 +49,23 @@ class AuthService {
             } else {
                 const userPasswordFromDB = user.password; // hashed password : $2b$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW
                 const isPasswordMatched = await bcrypt.compare(password, userPasswordFromDB); // true or false
+                let token = "";
+                if(isPasswordMatched) {
+                    const payload = {
+                        userEmail: user.email,
+                        name: user.name,
+                        phone: user.phoneNumber
+                    }
+                    token = jwt.sign(payload, SECRET_JWT_KEY, {
+                        expiresIn: "1000000"
+                    });
+                }
+
+                
 
                 return {
                     isLogged: isPasswordMatched,
+                    token
                 }
 
             }
@@ -55,6 +73,7 @@ class AuthService {
         } catch (error) {
             return {
                 isLogged: false,
+                token: ""
             };
         }
 
